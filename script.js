@@ -45,7 +45,7 @@ document.getElementById('play-btn').addEventListener('click', function() {
 
     // Compare player ranks
     function compareRanks(rank1, rank2) {
-      if (rank1 === rank2) {
+      if (rank1 === rank2 && rank1 !== 15 && rank2 !== 15) { // if both rank are the same both are eliminated except Flag
         return "Both Eliminated!";
       } else if (  
         (rank1 === 14 && rank2 === 1)|| //Private vs Spy
@@ -54,7 +54,7 @@ document.getElementById('play-btn').addEventListener('click', function() {
         return 'Player 1 wins!';
       }else if (rank1 === 1 && rank2 === 14){ // If player 1 is Spy then player 2 is Private
         return 'Spy cant Eliminate the Private';
-      }else if (rank1 === FLAG_RANK && rank2 === FLAG_RANK){ // flag vs flag
+      }else if (rank1 === 15 && rank2 === 15){ // flag vs flag  
         return 'First player to input wins';
       }else if (rank1 < rank2)  {
         return 'Player 1 wins!';
