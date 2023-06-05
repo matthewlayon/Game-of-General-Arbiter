@@ -22,41 +22,116 @@ document.getElementById('play-btn').addEventListener('click', function() {
         'Flag' //14
 
     ];
+
+    const PIECES_RANKING ={
+      SPY:1,
+      FIVE_STAR_GENERAL:2,
+      FOUR_STAR_GENERAL:3,
+      THREE_STAR_GENERAL:4,
+      TWO_STAR_GENERAL:5,
+      ONE_STAR_GENERAL:6,
+      COLONEL:7,
+      LT_COLONEL:8,
+      MAJOR:9,
+      CAPTAIN:10,
+      FIRST_LIEUTENENT:11,
+      SECOND_LIEUTENANT:12,
+      SERGEANT:13,
+      PRIVATE:14,
+      FLAG:15
+
+    };
     
-   const SPY_RANK = 1
-   const FIVE_STAR_GENERAL_RANK = 2
-   const FOUR_STAR_GENERAL_RANK = 3
-   const THREE_STAR_GENERAL_RANK = 4
-   const TWO_STAR_GENERAL_RANK = 5
-   const ONE_STAR_GENERAL_RANK = 6
-   const COLONEL_RANK = 7
-   const LTCOLONEL_RANK = 8
-   const MAJOR_RANK = 9
-   const CAPTAIN_RANK = 10
-   const FIRST_LIEUTENANT_RANK = 11
-   const SECOND_LIEUTENANT_RANK = 12
-   const SERGEANT_RANK = 13
-   const PRIVATE_RANK = 14
-   const FLAG_RANK = 15
+    const pieces =[
+      {
+        name:'Spy',
+        rank: PIECES_RANKING.SPY,
+        logoUrl: ''
+      },
+      {
+        name:'Five Star General',
+        rank: PIECES_RANKING.FIVE_STAR_GENERAL,
+        logoUrl: ''
+      },
+      {
+        name:'Four Star General',
+        rank: PIECES_RANKING.FOUR_STAR_GENERAL,
+        logoUrl: ''
+      },
+      {
+        name:'Three Star General',
+        rank: PIECES_RANKING.THREE_STAR_GENERAL,
+        logoUrl: ''
+      },
+      {
+        name:'Two Star General',
+        rank: PIECES_RANKING.TWO_STAR_GENERAL,
+        logoUrl: ''
+      },
+      {
+        name:'One Star General',
+        rank: PIECES_RANKING.ONE_STAR_GENERAL,
+        logoUrl: ''
+      },
+      {
+        name:'Colonel',
+        rank: PIECES_RANKING.COLONEL,
+        logoUrl: ''
+      },
+      {
+        name:'Lt. Colonel',
+        rank: PIECES_RANKING.LT_COLONEL,
+        logoUrl: ''
+      },
+      {
+        name:'Major',
+        rank: PIECES_RANKING.MAJOR,
+        logoUrl: ''
+      },
+      {
+        name:'First Lieutenant',
+        rank: PIECES_RANKING.FIRST_LIEUTENENT,
+        logoUrl: ''
+      },
+      {
+        name:'Second Lieutenant',
+        rank: PIECES_RANKING.SECOND_LIEUTENANT,
+        logoUrl: ''
+      },
+      {
+        name:'Sergeant',
+        rank: PIECES_RANKING.SERGEANT,
+        logoUrl: ''
+      },
+      {
+        name:'Private',
+        rank: PIECES_RANKING.PRIVATE,
+        logoUrl: ''
+      },
+      {
+        name:'Flag',
+        rank: PIECES_RANKING.FLAG,
+        logoUrl: ''
+      }
+
+    ];
+ 
 
 
 
    
 
-    // Compare player ranks
+    // Compare player ranks switch case
     function compareRanks(rank1, rank2) {
-      if (rank1 === rank2 && rank1 !== 15 && rank2 !== 15) { // if both rank are the same both are eliminated except Flag
-        return "Both Eliminated!";
+      if (rank1 === 15 && rank2 === 15){ // flag vs flag
+        return 'First player to input wins';
       } else if (  
-        (rank1 === 14 && rank2 === 1)|| //Private vs Spy
-        (rank1 === 14 && rank2 === 15) //Private vs Flag
+        (rank1 === rank2 ) // same input
        ){
-        return 'Player 1 wins!';
+        return "Both Eliminated!";
       }else if (rank1 === 1 && rank2 === 14){ // If player 1 is Spy then player 2 is Private
         return 'Spy cant Eliminate the Private';
-      }else if (rank1 === 15 && rank2 === 15){ // flag vs flag  
-        return 'First player to input wins';
-      }else if (rank1 < rank2)  {
+      }else if (rank1 < rank2)  { 
         return 'Player 1 wins!';
       } else {
         return 'Player 2 wins!';
@@ -78,9 +153,12 @@ document.getElementById('play-btn').addEventListener('click', function() {
           };
       
           // Store battle result in history
+          const historyList = document.getElementById('history-list');
           const historyItem = document.createElement('li'); // list item
           historyItem.textContent = `Player 1 (${player1Rank}) vs. Player 2 (${player2Rank}): ${result}`; //copied from result
-          document.getElementById('history-list').appendChild(historyItem); // to put the battle history to the end of the list 
+          historyList.insertBefore(historyItem, historyList.firstChild); // to put the latest battle history on top of the list.0
+
+          
       
           console.log(battleResult); // Log the battle result object
        
