@@ -1,27 +1,13 @@
 document.getElementById('play-btn').addEventListener('click', function() { 
     // Get player ranks from dropdown menus
-    const player1RankIndex = document.getElementById('player1-rank').selectedIndex; // retrieve data from index from the dropdown meny starting from 0
-    const player2RankIndex = document.getElementById('player2-rank').selectedIndex;
-  
-    // Soldier rankings
-    const soldierRankings = [
-        'Spy', //0
-        '5 Star General', //1
-        '4 Star General', //2
-        '3 Star General', //3
-        '2 Star General', //4
-        '1 Star General', //5
-        'Colonel', //6
-        'Lt. Colonel', //7
-        'Major', //8
-        'Captain', //9
-        '1st Lieutenant', //10
-        '2nd Lieutenant', //11
-        'Sergeant', //12
-        'Private', //13
-        'Flag' //14
+  const player1RankIndex = document.getElementById('player1-rank').value;
+  const player2RankIndex = document.getElementById('player2-rank').value;
 
-    ];
+  // Rest of the game logic and battle result display
+
+  // Reset the dropdown menus
+  document.getElementById('player1-rank').selectedIndex = 0;
+  document.getElementById('player2-rank').selectedIndex = 0;
 
     const PIECES_RANKING ={
       SPY:1,
@@ -49,27 +35,27 @@ document.getElementById('play-btn').addEventListener('click', function() {
         logoUrl: ''
       },
       {
-        name:'Five Star General',
+        name:'5 Star General',
         rank: PIECES_RANKING.FIVE_STAR_GENERAL,
         logoUrl: ''
       },
       {
-        name:'Four Star General',
+        name:'4 Star General',
         rank: PIECES_RANKING.FOUR_STAR_GENERAL,
         logoUrl: ''
       },
       {
-        name:'Three Star General',
+        name:'3 Star General',
         rank: PIECES_RANKING.THREE_STAR_GENERAL,
         logoUrl: ''
       },
       {
-        name:'Two Star General',
+        name:'2 Star General',
         rank: PIECES_RANKING.TWO_STAR_GENERAL,
         logoUrl: ''
       },
       {
-        name:'One Star General',
+        name:'1 Star General',
         rank: PIECES_RANKING.ONE_STAR_GENERAL,
         logoUrl: ''
       },
@@ -89,12 +75,17 @@ document.getElementById('play-btn').addEventListener('click', function() {
         logoUrl: ''
       },
       {
-        name:'First Lieutenant',
+        name:'Captain',
+        rank: PIECES_RANKING.CAPTAIN,
+        logoUrl: ''
+      },
+      {
+        name:'1st Lieutenant',
         rank: PIECES_RANKING.FIRST_LIEUTENENT,
         logoUrl: ''
       },
       {
-        name:'Second Lieutenant',
+        name:'2nd Lieutenant',
         rank: PIECES_RANKING.SECOND_LIEUTENANT,
         logoUrl: ''
       },
@@ -115,34 +106,31 @@ document.getElementById('play-btn').addEventListener('click', function() {
       }
 
     ];
- 
-
-
-
-   
 
     // Compare player ranks switch case
     function compareRanks(rank1, rank2) {
-      if (rank1 === 15 && rank2 === 15){ // flag vs flag
+      if (rank1 === PIECES_RANKING.FLAG && rank2 === PIECES_RANKING.FLAG){ // flag vs flag NOT WORKING 
         return 'First player to input wins';
       } else if (  
         (rank1 === rank2 ) // same input
        ){
         return "Both Eliminated!";
-      }else if (rank1 === 1 && rank2 === 14){ // If player 1 is Spy then player 2 is Private
+      }else if (rank1 === 1 && rank2 === 14){ // If player 1 is Spy then player 2 is Private  NOT WORKING 
         return 'Spy cant Eliminate the Private';
       }else if (rank1 < rank2)  { 
         return 'Player 1 wins!';
       } else {
         return 'Player 2 wins!';
       }
+
+      //ADD FUNCTION WHERE IF ONE FLAG IS ELIMNATED THE SYSTEM WILL DECLARE A WINNING PLAYER
       
     }
   
     // Check if ranks are selected
     if (player1RankIndex !== 0 && player2RankIndex !== 0) { // to check both players are not equal to 0
-        const player1Rank = soldierRankings[player1RankIndex - 1]; // since array starts with 0 and the dropdown value starts at 1
-        const player2Rank = soldierRankings[player2RankIndex - 1];// the code with -1 from the dropdown value to match the array 
+        const player1Rank = pieces[player1RankIndex -1 ].name; // since array starts with 0 and the dropdown value starts at 1
+        const player2Rank = pieces[player2RankIndex -1 ].name;// the code with -1 from the dropdown value to match the array 
         const result = compareRanks(player1RankIndex, player2RankIndex);
         document.getElementById('result').textContent = `Player 1 (${player1Rank}) vs. Player 2 (${player2Rank}): ${result}`;
     
@@ -158,10 +146,7 @@ document.getElementById('play-btn').addEventListener('click', function() {
           historyItem.textContent = `Player 1 (${player1Rank}) vs. Player 2 (${player2Rank}): ${result}`; //copied from result
           historyList.insertBefore(historyItem, historyList.firstChild); // to put the latest battle history on top of the list.0
 
-          
       
-          console.log(battleResult); // Log the battle result object
-       
       } else {
         document.getElementById('result').textContent = 'Please select ranks for both players.'; // condition if both the player didnt input anything
       }
