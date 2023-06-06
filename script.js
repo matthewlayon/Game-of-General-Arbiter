@@ -1,9 +1,25 @@
-document.getElementById('play-btn').addEventListener('click', function() { 
-    // Get player ranks from dropdown menus
-  const player1RankIndex = document.getElementById('player1-rank').value;
-  const player2RankIndex = document.getElementById('player2-rank').value;
+let players = []
 
-  // Rest of the game logic and battle result display
+let player1 = ''
+let player2 = ''
+
+
+document.getElementById('player1-rank').addEventListener('change', function(e){
+  player1 = Number(e.target.value)
+  if (player1 === 15){
+    players.push({name:"Player 1", value:player1});
+  }
+ 
+})
+document.getElementById('player2-rank').addEventListener('change', function(e){
+  player2 = Number(e.target.value)
+  if (player2 === 15){
+    players.push({name:"Player 2", value:player2});
+  }
+ 
+})
+
+document.getElementById('play-btn').addEventListener('click', function() { 
 
   // Reset the dropdown menus
   document.getElementById('player1-rank').selectedIndex = 0;
@@ -107,31 +123,40 @@ document.getElementById('play-btn').addEventListener('click', function() {
 
     ];
 
+    // Compare player ranks
+
+    const bothFlags = player1 === PIECES_RANKING.FLAG && player2 === PIECES_RANKING.FLAG
+
+    const privateVsSpy = player1 === PIECES_RANKING.PRIVATE && player2 === PIECES_RANKING.SPY || player2 === PIECES_RANKING.PRIVATE && player1 === PIECES_RANKING.SPY
+
     // Compare player ranks switch case
-    function compareRanks(rank1, rank2) {
-      if (rank1 === PIECES_RANKING.FLAG && rank2 === PIECES_RANKING.FLAG){ // flag vs flag NOT WORKING 
-        return 'First player to input wins';
-      } else if (  
-        (rank1 === rank2 ) // same input
-       ){
-        return "Both Eliminated!";
-      }else if (rank1 === 1 && rank2 === 14){ // If player 1 is Spy then player 2 is Private  NOT WORKING 
-        return 'Spy cant Eliminate the Private';
-      }else if (rank1 < rank2)  { 
+    function compareRanks() {
+     
+      if (bothFlags) {
+        return players[0].name + " Wins!";
+      } 
+
+      if(player1 === player2){
+        return 'Both are eliminated!';
+      }
+
+      if (privateVsSpy){
+        return 'Private wins!';
+      }
+
+      if (player1 < player2) {
         return 'Player 1 wins!';
       } else {
         return 'Player 2 wins!';
       }
-
-      //ADD FUNCTION WHERE IF ONE FLAG IS ELIMNATED THE SYSTEM WILL DECLARE A WINNING PLAYER
-      
     }
   
     // Check if ranks are selected
-    if (player1RankIndex !== 0 && player2RankIndex !== 0) { // to check both players are not equal to 0
-        const player1Rank = pieces[player1RankIndex -1 ].name; // since array starts with 0 and the dropdown value starts at 1
-        const player2Rank = pieces[player2RankIndex -1 ].name;// the code with -1 from the dropdown value to match the array 
-        const result = compareRanks(player1RankIndex, player2RankIndex);
+    if (player1 !== '' && player2 !== '') { // to check both players are not equal to 0
+        const player1Rank = pieces[player1 -1 ].name; // since array starts with 0 and the dropdown value starts at 1
+        const player2Rank = pieces[player2 -1 ].name;// the code with -1 from the dropdown value to match the array
+              
+        const result = compareRanks();
         document.getElementById('result').textContent = `Player 1 (${player1Rank}) vs. Player 2 (${player2Rank}): ${result}`;
     
         const battleResult = {
@@ -145,6 +170,8 @@ document.getElementById('play-btn').addEventListener('click', function() {
           const historyItem = document.createElement('li'); // list item
           historyItem.textContent = `Player 1 (${player1Rank}) vs. Player 2 (${player2Rank}): ${result}`; //copied from result
           historyList.insertBefore(historyItem, historyList.firstChild); // to put the latest battle history on top of the list.0
+
+          players = []
 
       
       } else {
